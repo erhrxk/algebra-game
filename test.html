@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test</title>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+  <button onclick="go()">Test Confetti + Sound</button>
+  <audio id="ding" src="https://cdn.pixabay.com/audio/2022/03/15/audio_378578974a.mp3"></audio>
+  <script>
+    function go() {
+      document.getElementById("ding").play();
+      confetti();
+    }
+  </script>
+</body>
+</html>

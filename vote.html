@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Player Order - Algebra Game</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Load confetti library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="videos.html">Videos</a>
+    <a href="rules.html">Rules</a>
+    <a href="vote.html">Player Order</a>
+  </nav>
+
+  <div class="hero"><h1>🎯 Decide Player Turn Order!</h1></div>
+
+  <div class="frame">
+    <h2>Enter Player Names</h2>
+    <p>Separate names with commas (e.g., Yellow, Red, Blue)</p>
+
+    <input
+      type="text"
+      id="playerInput"
+      placeholder="Type names here..."
+      style="width: 90%; padding: 10px; font-size: 1em; border-radius: 10px; border: 1px solid #ccc;"
+    />
+
+    <br /><br />
+    <button onclick="shufflePlayers()">Shuffle Order</button>
+
+    <div id="result" style="margin-top: 20px;"></div>
+  </div>
+
+  <!-- Sound effect -->
+  <audio id="ding" preload="auto">
+    <source
+      src="https://www.soundjay.com/button/sounds/button-09.mp3"
+      type="audio/mpeg"
+    />
+    Your browser does not support the audio tag.
+  </audio>
+
+  <script>
+    function shufflePlayers() {
+      const input = document.getElementById("playerInput").value;
+      let players = input
+        .split(",")
+        .map((p) => p.trim())
+        .filter((p) => p.length > 0);
+
+      if (players.length < 2) {
+        document.getElementById("result").innerHTML =
+          "<p>Please enter at least 2 names.</p>";
+        return;
+      }
+
+      // Fisher-Yates shuffle
+      for (let i = players.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [players[i], players[j]] = [players[j], players[i]];
+      }
+
+      // Play sound with retry on failure
+      const ding = document.getElementById("ding");
+      ding.currentTime = 0;
+      ding.play().catch(() => {
+        setTimeout(() => ding.play(), 100);
+      });
+
+      // Confetti effect
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+
+      // Show results
+      let output = "<h3>🎉 Player Order:</h3><ol>";
+      players.forEach((p) => {
+        output += `<li>${p}</li>`;
+      });
+      output += "</ol>";
+
+      document.getElementById("result").innerHTML = output;
+    }
+  </script>
+</body>
+</html>
